@@ -126,6 +126,14 @@ resource "azurerm_postgresql_database" "postgresql_database" {
   charset             = "UTF8"
   collation           = "French_France.1252"
 }
+resource "azurerm_postgresql_firewall_rule" "allow_my_ip" {
+  name                = "AllowMyIP"
+  resource_group_name = azurerm_resource_group.Resource_gr_backfront_z.name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  start_ip_address    = "20.216.165.33"
+  end_ip_address      = "20.216.165.33"
+}
+
 
 output "private_key" {
   value = tls_private_key.generated_key1.private_key_pem
