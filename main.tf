@@ -105,7 +105,7 @@ resource "azurerm_linux_virtual_machine" "backfront_zahra" {
 
 # Création du serveur PostgreSQL
 resource "azurerm_postgresql_server" "postgresql_server" {
-  name                = "postgres-server"
+  name                = "postgres-server1"
   resource_group_name = azurerm_resource_group.Resource_gr_backfront_z.name
   location            = azurerm_resource_group.Resource_gr_backfront_z.location
   sku_name            = "B_Gen5_1"
