@@ -109,18 +109,13 @@ resource "azurerm_postgresql_server" "postgresql_server" {
   resource_group_name = azurerm_resource_group.Resource_gr_backfront_z.name
   location            = azurerm_resource_group.Resource_gr_backfront_z.location
   sku_name            = "B_Gen5_1"
-  version             = "13"
+  version             = "11"
   administrator_login          = "postgresadmin"
-  administrator_login_password = "zahra"  # Assurez-vous de sécuriser ce mot de passe
+  administrator_login_password = "zahra96ZAHRA"
 
-  storage_profile {
-    storage_mb            = 51200  # Taille du stockage en Mo
-    backup_retention_days = 7
-    geo_redundant_backup  = "Disabled"
-  }
-
-  ssl_enforcement      = "Enabled"
+  ssl_enforcement_enabled = true
   create_mode          = "Default"
+
 }
 
 # Création de la base de données PostgreSQL
