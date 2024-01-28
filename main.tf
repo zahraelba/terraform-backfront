@@ -25,7 +25,7 @@ resource "azurerm_public_ip" "Public_ip_backfront_z" {
   name                = "Public_ip_backfront_z"
   resource_group_name = azurerm_resource_group.Resource_gr_backfront_z.name
   location            = azurerm_resource_group.Resource_gr_backfront_z.location
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 }
 
 resource "azurerm_network_security_group" "NSG_backfront_z" {
@@ -102,6 +102,36 @@ resource "azurerm_linux_virtual_machine" "backfront_zahra" {
   computer_name  = "backfrontzahra"
 
 }
+
+# Création du serveur PostgreSQL
+resource "azurerm_postgresql_server" "postgresql_server" {
+  name                = "postgres-server"
+  resource_group_name = azurerm_resource_group.Resource_gr_backfront_z.name
+  location            = azurerm_resource_group.Resource_gr_backfront_z.location
+  sku_name            = "B_Gen5_1"
+  version             = "13"
+  administrator_login          = "postgresadmin"
+  administrator_login_password = "zahra"  # Assurez-vous de sécuriser ce mot de passe
+
+  storage_profile {
+    storage_mb            = 51200  # Taille du stockage en Mo
+    backup_retention_days = 7
+    geo_redundant_backup  = "Disabled"
+  }
+
+  ssl_enforcement      = "Enabled"
+  create_mode          = "Default"
+}
+
+# Création de la base de données PostgreSQL
+resource "azurerm_postgresql_database" "postgresql_database" {
+  name                = "omega"
+  resource_group_name = azurerm_resource_group.Resource_gr_backfront_z.name
+  server_name         = azurerm_postgresql_server.postgresql_server.name
+  charset             = "UTF8"
+  collation           = "French_France.1252"
+}
+
 output "private_key" {
   value = tls_private_key.generated_key1.private_key_pem
   sensitive = true
